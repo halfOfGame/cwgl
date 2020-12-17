@@ -82,10 +82,12 @@
         date.setDate(1);
         $("#start").val() == "" ? $("#start").val(date.toLocaleDateString().replace(/\//g, '-')) : {};
         $("#end").val() == "" ? $("#end").val(new Date().toLocaleDateString().replace(/\//g, '-')) : {};
-        // console.log(daysBetween($("#end").val(),$("#start").val()));
+        var endDate = new Date($("#end").val());
+        endDate.setDate(endDate.getDate() + 1);
+        var endDateString = endDate.toLocaleDateString().replace(/\//g, '-');
         var bill = {
             "startTime": $("#start").val(),
-            "endTime": $("#end").val(),
+            "endTime": endDateString,
             "realname": $("#realname").val(),
             "title": $("#title").val(),
             "paywayid": $("#payway").val() == -1 ? null : $("#payway").val(),
@@ -93,6 +95,7 @@
         // console.log(bill)
         // 异步加载数据
         $.post('/bills/getBillsToChart', bill, function (res) {
+            console.log(bill);
             if (res.code == 200) {
                 setChart3(res.datas);
                 setChart4(res.datas);
