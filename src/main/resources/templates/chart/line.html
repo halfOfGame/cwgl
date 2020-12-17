@@ -51,9 +51,9 @@
         </form>
     </div>
     <fieldset class="layui-elem-field" style="height: 1000px; ">
-        <div id="chart1" class="layui-col-md6 layui-col-sm12" style="height: 400px;"></div>
-        <div id="chart11" class="layui-col-md6 layui-col-sm12" style="height: 400px;"></div>
-        <div id="chart2" style="height: 600px;"></div>
+        <div id="chart3" class="layui-col-md6 layui-col-sm12" style="height: 400px;"></div>
+        <div id="chart4" class="layui-col-md6 layui-col-sm12" style="height: 400px;"></div>
+        <div id="chart5" style="height: 600px;"></div>
     </fieldset>
 </div>
 
@@ -80,8 +80,8 @@
     function getBills() {
         var date = new Date();
         date.setDate(1);
-        $("#start").val()==""? $("#start").val(date.toLocaleDateString().replace(/\//g,'-')) : {};
-        $("#end").val()==""? $("#end").val(new Date().toLocaleDateString().replace(/\//g,'-')) : {};
+        $("#start").val() == "" ? $("#start").val(date.toLocaleDateString().replace(/\//g, '-')) : {};
+        $("#end").val() == "" ? $("#end").val(new Date().toLocaleDateString().replace(/\//g, '-')) : {};
         // console.log(daysBetween($("#end").val(),$("#start").val()));
         var bill = {
             "startTime": $("#start").val(),
@@ -92,16 +92,16 @@
         }
         // console.log(bill)
         // 异步加载数据
-        $.post('/bills/getBillsToChart',bill, function (res) {
-            if (res.code == 200){
-                    setChart1(res.datas);
-                    setChart11(res.datas);
-                    setChart2(res.datas);
+        $.post('/bills/getBillsToChart', bill, function (res) {
+            if (res.code == 200) {
+                setChart3(res.datas);
+                setChart4(res.datas);
+                setChart5(res.datas);
 
             } else {
-                myChart1.hideLoading();
-                myChart11.hideLoading();
-                myChart2.hideLoading();
+                myChart3.hideLoading();
+                myChart4.hideLoading();
+                myChart5.hideLoading();
             }
 
         });
@@ -109,18 +109,17 @@
 
     function initChart() {
         // 基于准备好的dom，初始化echarts实例
-        myChart1 = echarts.init(document.getElementById('chart1'));
-        // myChart11 = echarts.init(document.getElementById('chart11'));
-        myChart11 = echarts.init(document.getElementById('chart11'));
-        myChart2 = echarts.init(document.getElementById('chart2'));
+        myChart3 = echarts.init(document.getElementById('chart3'));
+        myChart4 = echarts.init(document.getElementById('chart4'));
+        myChart5 = echarts.init(document.getElementById('chart5'));
         // 指定图表的配置项和数据
-        myChart1.setOption({
-            title : {
+        myChart3.setOption({
+            title: {
                 text: '收支对比',
                 x: 'center',
                 y: 'bottom',
             },
-            tooltip : {
+            tooltip: {
                 trigger: 'item',
                 formatter: "{b} : {c}元 ({d}%)"
             },
@@ -129,21 +128,21 @@
                 left: '10%',
                 top: '10%',
                 // align: 'left',
-                data:['收入', '支出'],
+                data: ['收入', '支出'],
             },
             toolbox: {
                 feature: {
                     saveAsImage: {}
                 }
             },
-            color: [ '#ff9f7b', '#2fa1dd'],
-            series : [
+            color: ['#ff9f7b', '#2fa1dd'],
+            series: [
                 {
-                    name:'本月收支',
-                    type:'pie',
-                    radius : '55%',
+                    name: '本月收支',
+                    type: 'pie',
+                    radius: '55%',
                     center: ['50%', '50%'],
-                    data:[],
+                    data: [],
                     label: {
                         position: 'inside',
                         formatter: '{b} \n\n {d}%',
@@ -174,9 +173,9 @@
                 }
             ]
         });
-        myChart1.showLoading();
-        myChart11.setOption({
-            title : {
+        myChart3.showLoading();
+        myChart4.setOption({
+            title: {
                 text: '支付方式',
                 x: 'center',
                 y: 'bottom',
@@ -193,9 +192,9 @@
             yAxis: {
                 type: 'value'
             },
-            tooltip : {
+            tooltip: {
                 trigger: 'item',
-                axisPointer:{
+                axisPointer: {
                     type: 'shadow',
                 },
             },
@@ -216,7 +215,7 @@
                         {color: '#1CD8A8', offset: 1}
                     ]), // 渐变
                 },
-            },{
+            }, {
                 data: [],
                 type: 'line',
                 smooth: true, // 线条转折有弧度
@@ -228,7 +227,10 @@
                 symbolSize: 8, // 数值点的大小
                 lineStyle: {
                     width: 2,
-                    color:  new echarts.graphic.LinearGradient(0, 0, 1, 0, [{offset: 0, color: '#2FAEF2'},{offset: 1, color: '#1CD8A8'}])
+                    color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{offset: 0, color: '#2FAEF2'}, {
+                        offset: 1,
+                        color: '#1CD8A8'
+                    }])
                 }, // 线条渐变
                 // areaStyle: {
                 //     color:  new echarts.graphic.LinearGradient(0, 1, 0, 0, [
@@ -239,9 +241,9 @@
                 // },
             }]
         });
-        myChart11.showLoading();
-        myChart2.setOption({
-            title : {
+        myChart4.showLoading();
+        myChart5.setOption({
+            title: {
                 text: '收支对比',
                 x: 'center',
                 y: 'bottom'
@@ -250,7 +252,7 @@
                 trigger: 'axis'
             },
             legend: {
-                data:['收入','支出','净收入'],
+                data: ['收入', '支出', '净收入'],
                 right: '5%',
                 top: 10,
             },
@@ -282,8 +284,8 @@
             },
             series: [
                 {
-                    name:'收入',
-                    type:'bar',
+                    name: '收入',
+                    type: 'bar',
                     itemStyle: {
                         barBorderRadius: [5, 5, 5, 5],// 圆角（左上、右上、右下、左下）
                         // color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
@@ -292,11 +294,11 @@
                         // ]), // 渐变
                         color: "#ed9473",
                     },
-                    data:[],
+                    data: [],
                 },
                 {
-                    name:'支出',
-                    type:'bar',
+                    name: '支出',
+                    type: 'bar',
                     itemStyle: {
                         barBorderRadius: [5, 5, 5, 5],// 圆角（左上、右上、右下、左下）
                         // color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
@@ -305,11 +307,11 @@
                         // ]), // 渐变
                         color: "#2fa1dd"
                     },
-                    data:[]
+                    data: []
                 },
                 {
-                    name:'净收入',
-                    type:'line',
+                    name: '净收入',
+                    type: 'line',
                     areaStyle: {},
                     itemStyle: {
                         barBorderRadius: [5, 5, 5, 5],// 圆角（左上、右上、右下、左下）
@@ -319,7 +321,7 @@
                         ]), // 渐变
                     },
                     smooth: true, // 线条转折有弧度
-                    data:[]
+                    data: []
                 }
             ],
             animationDuration: function (idx) {
@@ -327,67 +329,68 @@
                 return idx * 300;
             }
         });
-        myChart2.showLoading();
+        myChart5.showLoading();
     }
 
-    function setChart1(datas){
+    function setChart3(datas) {
         var paySum = 0;
         var incomeSum = 0;
-        $.each(datas,function (index,item) {
-            if(item.typeid == 1){
+        $.each(datas, function (index, item) {
+            if (item.typeid == 1) {
                 paySum += parseFloat(item.money);
-            }else if (item.typeid == 2) {
+            } else if (item.typeid == 2) {
                 incomeSum += parseFloat(item.money);
             }
         });
-        myChart1.hideLoading();
-        myChart1.setOption({
+        myChart3.hideLoading();
+        myChart3.setOption({
             series: [{
                 // 根据名字对应到相应的系列
                 name: '本月收支',
                 data: [
-                    {value:incomeSum.toFixed(2), name:'收入', selected: true},
-                    {value:paySum.toFixed(2), name:'支出'},
+                    {value: incomeSum.toFixed(2), name: '收入', selected: true},
+                    {value: paySum.toFixed(2), name: '支出'},
                 ],
             }]
         });
     }
 
-    function setChart11(datas) {
-        var money = [0,0,0,0,0];
-        $.each(datas,function (index,item) {
+    function setChart4(datas) {
+        var money = [0, 0, 0, 0, 0];
+        $.each(datas, function (index, item) {
             for (var i = 0; i < 5; i++) {
-                if (item.paywayid==(i+1)){
-                    if (item.typeid == 1){
+                if (item.paywayid == (i + 1)) {
+                    if (item.typeid == 1) {
                         money[i] -= item.money;
-                    }else if(item.typeid == 2){
+                    } else if (item.typeid == 2) {
                         money[i] += item.money;
                     }
                 }
             }
         });
-        myChart11.hideLoading();
-        myChart11.setOption({
+        myChart4.hideLoading();
+        myChart4.setOption({
             series: [{
                 data: money,
-            },{
+            }, {
                 data: money
             }]
         });
     }
 
-    function setChart2(datas) {
+    function setChart5(datas) {
         var x = [], payVal = new Array(30), incomeVal = new Array(30), netIncomeVal = new Array(30);
         var start = new Date($("#start").val());
         var end = new Date($("#end").val());
-        var between = daysBetween(end,start);
-        for (var i = 0; i<= between; i++){
-            payVal[i]=0; incomeVal[i]=0, netIncomeVal[i]=0;
-            var dateStr = dateAdd(start,i);
+        var between = daysBetween(end, start);
+        for (var i = 0; i <= between; i++) {
+            payVal[i] = 0;
+            incomeVal[i] = 0, netIncomeVal[i] = 0;
+            var dateStr = dateAdd(start, i);
             x.push(dateStr);
-            var incomeSum=0, paySum = 0, netIncomeSum = 0;
-            $.each(datas,function (index,item) {
-                if(item.time.split(" ")[0] == dateStr){
+            var incomeSum = 0, paySum = 0, netIncomeSum = 0;
+            $.each(datas, function (index, item) {
+                if (item.time.split(" ")[0] == dateStr) {
                     if (item.typeid == 1) {
                         paySum += parseFloat(item.money);
                     } else if (item.typeid == 2) {
@@ -402,23 +405,23 @@
         }
         // console.log(payVal);
         // console.log(incomeVal);
-        myChart2.hideLoading();
-        myChart2.setOption({
+        myChart5.hideLoading();
+        myChart5.setOption({
             xAxis: {
                 data: x
             },
             series: [
                 // 根据名字对应到相应的系列
                 {
-                    name:'支出',
+                    name: '支出',
                     data: payVal
                 },
                 {
-                    name:'收入',
+                    name: '收入',
                     data: incomeVal
                 },
                 {
-                    name:'净收入',
+                    name: '净收入',
                     data: netIncomeVal
                 }
             ]
