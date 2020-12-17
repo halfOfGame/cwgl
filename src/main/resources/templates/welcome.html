@@ -101,7 +101,6 @@
                                             </ul>
                                         </a>
                                     </li>
-
                                 </ul>
                             </div>
                         </div>
@@ -115,7 +114,6 @@
         <div id="chart1" class="layui-col-md6 layui-col-sm12" style="height: 400px;"></div>
         <div id="chart2" class="layui-col-md6 layui-col-sm12" style="height: 400px;"></div>
     </fieldset>
-    <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,x-admin,百度Echarts,jquery。</blockquote>
 </div>
 
 <script>
@@ -125,9 +123,9 @@
             $("#role").html("系统管理员");
         } else if (parent.sessionUser.roleid == 2) {
             $("#role").html("家主");
-        } else if(parent.sessionUser.roleid == 3){
+        } else if (parent.sessionUser.roleid == 3) {
             $("#role").html("用户");
-            $("#lb").css("display","none");
+            $("#lb").css("display", "none");
         }
         $("#username").html(parent.sessionUser.username);
         $("#date").html(new Date().toLocaleString());
@@ -139,7 +137,7 @@
         //初始化统计图
         initChart();
         //显示数据
-        // showDatasInChart();
+        showDatasInChart();
 
     });
 
@@ -161,22 +159,17 @@
                 analyzeLB123(res.datas)
                 analyzeLB4(res.datas);
                 //统计图
-                setChart1(res.datas);
-                setChart2(res.datas);
-
-                myChart1.hideLoading();
-                myChart2.hideLoading();
+                // setChart1(res.datas);
+                // setChart2(res.datas);
+                //
+                // myChart1.hideLoading();
+                // myChart2.hideLoading();
             }
 
         });
     }
 
-    // var data = [{
-    //     ouputname :"",
-    //     income: 0,
-    //     pay: 0,
-    //     netincome: 0
-    // }];
+
     function analyzeLB123(datas) {
         var datas2 = [];
         $.each(datas, function (index, item) {
@@ -215,11 +208,7 @@
         fillHtmlToLB(datas2, 3);
     }
 
-    // var data2 = [{
-    //     paywayid: 1,
-    //     payway: "支付宝",
-    //     money: 0
-    // }];
+
     function analyzeLB4(datas) {
         var datas2 = [];
         $.each(datas, function (index, item) {
@@ -311,7 +300,7 @@
                 left: '10%',
                 top: '10%',
                 // align: 'left',
-                data:['收入', '支出'],
+                data: ['收入', '支出'],
             },
             tooltip: {
                 trigger: 'item',
@@ -401,8 +390,8 @@
             },
             series: [
                 {
-                    name:'收入',
-                    type:'bar',
+                    name: '收入',
+                    type: 'bar',
                     itemStyle: {
                         barBorderRadius: [5, 5, 5, 5],// 圆角（左上、右上、右下、左下）
                         // color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
@@ -411,11 +400,11 @@
                         // ]), // 渐变
                         color: "#ed9473",
                     },
-                    data:[],
+                    data: [],
                 },
                 {
-                    name:'支出',
-                    type:'bar',
+                    name: '支出',
+                    type: 'bar',
                     itemStyle: {
                         barBorderRadius: [5, 5, 5, 5],// 圆角（左上、右上、右下、左下）
                         // color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
@@ -424,11 +413,11 @@
                         // ]), // 渐变
                         color: "#2fa1dd"
                     },
-                    data:[]
+                    data: []
                 },
                 {
-                    name:'净收入',
-                    type:'line',
+                    name: '净收入',
+                    type: 'line',
                     areaStyle: {},
                     itemStyle: {
                         barBorderRadius: [5, 5, 5, 5],// 圆角（左上、右上、右下、左下）
@@ -438,7 +427,7 @@
                         ]), // 渐变
                     },
                     smooth: true, // 线条转折有弧度
-                    data:[]
+                    data: []
                 }
             ],
             animationDuration: function (idx) {
@@ -449,34 +438,34 @@
         myChart2.showLoading();
     }
 
-    // function showDatasInChart() {
-    //     var start = new Date();
-    //     start.setDate(start.getDate()-30);
-    //     var end = new Date();
-    //     end.setDate(end.getDate()+1);
-    //     var bill = {
-    //         "startTime": start.toLocaleDateString().replace(/\//g,'-'),
-    //         "endTime": end.toLocaleDateString().replace(/\//g,'-')
-    //     }
-    //     // console.log(bill)
-    //     // 异步加载数据
-    //     $.post('/bills/getBillsToChart',bill, function (res) {
-    //         // console.log(res.datas);
-    //         if (res.code == 200){
-    //             if(res.datas.length > 0) {
-    //                 setChart1(res.datas);
-    //                 setChart2(res.datas);
-    //             }else {
-    //                 layer.msg("暂无相关数据");
-    //             }
-    //         } else {
-    //             layer.msg(res.msg);
-    //             myChart1.hideLoading();
-    //             myChart2.hideLoading();
-    //         }
-    //
-    //     });
-    // }
+    function showDatasInChart() {
+        var start = new Date();
+        start.setDate(start.getDate() - 30);
+        var end = new Date();
+        end.setDate(end.getDate() + 1);
+        var bill = {
+            "startTime": start.toLocaleDateString().replace(/\//g, '-'),
+            "endTime": end.toLocaleDateString().replace(/\//g, '-')
+        }
+        // console.log(bill)
+        // 异步加载数据
+        $.post('/bills/getBillsToChart', bill, function (res) {
+            // console.log(res.datas);
+            if (res.code == 200) {
+                if (res.datas.length > 0) {
+                    setChart1(res.datas);
+                    setChart2(res.datas);
+                } else {
+                    layer.msg("暂无相关数据");
+                }
+            } else {
+                layer.msg(res.msg);
+                myChart1.hideLoading();
+                myChart2.hideLoading();
+            }
+
+        });
+    }
 
     // 填入myChart1数据
     function setChart1(datas) {
